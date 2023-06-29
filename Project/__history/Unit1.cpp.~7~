@@ -1,0 +1,184 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+#include "Unit3.h"
+
+#include <vector>
+#include <math.h>
+#include <string>
+
+using namespace std;
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+double __fastcall PointsDistance(const TPoint& p1, const TPoint& p2)
+{
+	double dx = p2.x - p1.x;
+	double dy = p2.y - p1.x;
+	return sqrt(dx*dx + dy*dy);
+
+}
+
+double __fastcall TriangleArea(const TPoint& p1, const TPoint& p2, const TPoint& p3)
+{
+	return 0.5 * abs(p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y));
+}
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+	StringGrid1->Cells[0][0] = "№ точки"; //колонка-строка
+	StringGrid1->Cells[1][0] = "X";
+	StringGrid1->Cells[2][0] = "Y";
+
+	PaintBox1->Canvas->Pen->Color = clBlack;
+	PaintBox1->Canvas->MoveTo(0,(PaintBox1->Height)/2);
+	PaintBox1->Canvas->LineTo(PaintBox1->Width,(PaintBox1->Height)/2);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N1Click(TObject *Sender)
+{
+	String message = "Уфологи обнаружили на некоторой местности K точек посадки НЛО. "
+					 "Так как всем известно, что инопланетяне очень любят треугольники, вам была поставлена задача найти треугольник с самой меньшей площадью, который только можно из них построить, определить его геометрический центр и провести от него линию к самой удаленной от него точке посадки НЛО."
+					 "Узнав длину этой линии человечество получит шанс узнать хоть что-нибудь о наших братьях по разуму.";
+	ShowMessage(message);
+}
+//---------------------------------------------------------------------------
+/*vector<TPoint> points;
+int pointCount = StrToInt(Edit1->Text); // Получаем количество точек из Edit1
+
+	PaintBox1->Canvas->Brush->Color = clWhite; // Устанавливаем цвет заливки PaintBox1
+	PaintBox1->Canvas->FillRect(PaintBox1->ClientRect); // Очищаем PaintBox1
+
+	points.clear();
+
+	// Генерируем случайные координаты для каждой точки и выводим их на PaintBox1
+	for (int i = 0; i < pointCount; ++i)
+	{
+		TPoint p;
+		p.x = Random(PaintBox1->Width); // Случайная координата X
+		p.y = Random(PaintBox1->Height); // Случайная координата Y
+
+		points.push_back(p);
+
+		PaintBox1->Canvas->Brush->Color = clBlack; // Устанавливаем цвет заливки точки
+		PaintBox1->Canvas->Pen->Color = clBlack; // Устанавливаем цвет пера точки
+
+		PaintBox1->Canvas->Ellipse(p.x - 3, p.y - 3, p.x + 3, p.y + 3); // Рисуем точку
+	}
+
+	// Находим треугольник с наименьшей площадью
+	double minArea = 100000000;
+	TPoint minP1, minP2, minP3;
+
+	for (int i = 0; i < pointCount - 2; ++i)
+    {
+		for (int j = i + 1; j < pointCount - 1; ++j)
+        {
+			for (int k = j + 1; k < pointCount; ++k)
+			{
+				double area = TriangleArea(points[i], points[j], points[k]);
+				if (area < minArea)
+				{
+                    minArea = area;
+					minP1 = points[i];
+                    minP2 = points[j];
+					minP3 = points[k];
+                }
+            }
+        }
+	}
+
+	// Находим самую удаленную точку от центра треугольника
+	double centerX = (minP1.x + minP2.x + minP3.x) / 3;
+	double centerY = (minP1.y + minP2.y + minP3.y) / 3;
+	TPoint center(centerX, centerY);
+
+	double maxDistance = 0;
+	TPoint maxPoint;
+
+	for (int i = 0; i < pointCount; ++i)
+    {
+		double dist = PointsDistance(center, points[i]);
+		if (dist > maxDistance)
+		{
+            maxDistance = dist;
+            maxPoint = points[i];
+        }
+	}
+
+	// Выводим треугольник и линию в PaintBox1
+	TCanvas* canvas = PaintBox1->Canvas;
+
+	canvas->Pen->Color = clBlue;
+	canvas->Brush->Color = clBlue;
+	canvas->MoveTo(minP1.x, minP1.y);
+	canvas->LineTo(minP2.x, minP2.y);
+	canvas->LineTo(minP3.x, minP3.y);
+    canvas->LineTo(minP1.x, minP1.y);
+
+    canvas->Pen->Color = clRed;
+	canvas->MoveTo(centerX, centerY);
+    canvas->LineTo(maxPoint.x, maxPoint.y);
+
+	ShowMessage("Длина линии: " + FloatToStr(maxDistance) + "\n" + "Площадь треугольника: " + FloatToStr(minArea));*/
+
+
+void __fastcall TForm1::N4Click(TObject *Sender)
+{
+	int nm = StringGrid1->Selection.Top;//Определяем номер выделенной строки
+	Form2->Caption="Редактирование" ;
+	Form2->Edit1->Text= Form1->StringGrid1->Cells[1][nm];
+	Form2->Edit2->Text= Form1->StringGrid1->Cells[2][nm];
+	Form2->Show();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::N5Click(TObject *Sender)
+{
+    Form2->Caption="Добавление вручную" ;
+	Form2->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N6Click(TObject *Sender)
+{
+	Form3->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N7Click(TObject *Sender)
+{
+	int nm= StringGrid1->Selection.Top;
+	for(int i=nm; i < StringGrid1->RowCount-1; ++i)
+	{
+		StringGrid1->Rows[i] = StringGrid1->Rows[i+1];
+		StringGrid1->Cells[0][i] = i ;  // Затереть текущую строку следующей
+	}
+	StringGrid1->RowCount--;     //умеьшить кол-во строк
+	ShowMessage("Удаление строки произошло успешно.");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::PaintBox1Click(TObject *Sender)
+{
+	Canvas->Pen->Color = clBlack;
+	Canvas->MoveTo(0,(PaintBox1->Height)/2);
+	Canvas->LineTo(PaintBox1->Width,(PaintBox1->Height)/2);
+}
+//---------------------------------------------------------------------------
+
+
